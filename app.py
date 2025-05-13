@@ -48,14 +48,7 @@ def text_to_pdf(text):
 
 @app.route('/')
 def index():
-    return '''
-    <h2>Upload Two Files (TXT, DOCX, PDF) to Compare</h2>
-    <form method="post" action="/compare" enctype="multipart/form-data">
-        File 1: <input type="file" name="file1"><br><br>
-        File 2: <input type="file" name="file2"><br><br>
-        <input type="submit" value="Compare">
-    </form>
-    '''
+    return render_template('index.html')
 
 @app.route('/compare', methods=['POST'])
 def compare():
@@ -114,4 +107,4 @@ def export(fmt):
         return 'Unsupported export format.'
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=8000)

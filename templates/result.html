@@ -5,22 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Text File Comparison Result</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
-<body class="min-h-screen bg-gray-100 flex items-center justify-center">
-    <div class="container max-w-3xl w-full mx-auto p-6 bg-white rounded-xl shadow-lg">
-        <header class="text-center mb-6">
-            <h1 class="text-2xl font-bold text-gray-800">Comparison Result</h1>
-            <p class="text-gray-500 text-sm mt-1">View the differences between your files</p>
+<body>
+    <div class="container">
+        <header>
+            <h1>Comparison Result</h1>
+            <p>View the differences between your files</p>
         </header>
-        <div class="diff-container bg-gray-50 p-4 rounded-md border border-gray-200 overflow-x-auto">
+        <div class="diff-container">
             {{ diff_html|safe }}
         </div>
-        <div class="mt-6 text-center">
-            <a href="/"
-                class="inline-block py-2 px-4 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-transform hover:-translate-y-0.5">Compare
-                Again</a>
+        <div class="button-container">
+            <a href="/" class="compare-button">Compare Again</a>
         </div>
     </div>
 </body>
