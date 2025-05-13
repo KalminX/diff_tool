@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Text File Comparison</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <h1>Comparison Result</h1>
+    <div class="diff-container">
+        {{ diff_html|safe }}
+    </div>
+    <br>
+    <a href="/">Compare Again</a>
+</body>
+
+</html>
