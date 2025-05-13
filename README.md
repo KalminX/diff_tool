@@ -26,7 +26,7 @@ Built with **Flask**, styled with custom CSS, and deployed using **Gunicorn & Do
 ## 🏗️ Project Structure
 
 ```
-text_diff_app/
+diff_tool/
 ├── app.py                # Flask application code
 ├── requirements.txt      # Python dependencies
 ├── Dockerfile            # Docker build instructions

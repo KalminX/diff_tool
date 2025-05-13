@@ -8,7 +8,14 @@ ENV PYTHONUNBUFFERED 1
 # Set working directory
 WORKDIR /app
 
-# Install dependencies
+# Install system dependencies for libmagic
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libmagic1 \
+    libmagic-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 

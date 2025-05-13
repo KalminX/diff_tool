@@ -5,24 +5,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>File Comparison Tool</title>
+    <!-- External CSS linked here -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-
 
 <body>
     <div class="container">
         <header>
             <h1>File Comparison Tool</h1>
-            <p>Compare DOCX and PDF files with ease</p>
+            <p>Compare TXT, DOCX, or PDF files with ease</p>
         </header>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="error-message">
+            {% for message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
         <form action="{{ url_for('compare') }}" method="POST" enctype="multipart/form-data" class="upload-form">
             <div class="form-group">
-                <label for="file1">DOCX File</label>
-                <input type="file" name="file1" id="file1" accept=".docx" required>
+                <label for="file1">TXT, DOCX, or PDF File</label>
+                <input type="file" name="file1" id="file1" accept=".txt,.docx,.pdf" required>
             </div>
             <div class="form-group">
-                <label for="file2">PDF or DOCX File</label>
-                <input type="file" name="file2" id="file2" accept=".pdf,.docx" required>
+                <label for="file2">TXT, DOCX, or PDF File</label>
+                <input type="file" name="file2" id="file2" accept=".txt,.docx,.pdf" required>
             </div>
             <button type="submit" class="compare-button">Compare Files</button>
         </form>

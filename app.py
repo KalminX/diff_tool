@@ -1,12 +1,14 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, flash, redirect, url_for
 import difflib
 import os
 import fitz  # PyMuPDF
 import docx
 from reportlab.pdfgen import canvas
 from io import BytesIO
+import magic
 
 app = Flask(__name__)
+app.secret_key = b'_5#y2Lzcgsfga"FzzzzQ8xxx\n\xdc]/'
 
 # --- Conversion Functions ---
 
@@ -56,30 +58,61 @@ def compare():
     file2 = request.files['file2']
 
     if not file1 or not file2:
-        return 'Both files are required!'
+        flash('Both files are required!')
+        return redirect(url_for('index'))
 
     ext1 = os.path.splitext(file1.filename)[1].lower()
     ext2 = os.path.splitext(file2.filename)[1].lower()
 
+    # Validate file types using MIME type
+    mime = magic.Magic(mime=True)
+    file1_content = file1.read()
+    file1_mime = mime.from_buffer(file1_content)
+    file1.seek(0)
+
+    file2_content = file2.read()
+    file2_mime = mime.from_buffer(file2_content)
+    file2.seek(0)
+
     # Convert file1 to text
     if ext1 == '.docx':
+        if file1_mime != 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+            flash('File 1 is not a valid DOCX file!')
+            return redirect(url_for('index'))
         text1 = docx_to_text(file1)
     elif ext1 == '.pdf':
+        if file1_mime != 'application/pdf':
+            flash('File 1 is not a valid PDF file!')
+            return redirect(url_for('index'))
         text1 = pdf_to_text(file1)
     elif ext1 == '.txt':
+        if not file1_mime.startswith('text/'):
+            flash('File 1 is not a valid text file!')
+            return redirect(url_for('index'))
         text1 = file1.read().decode('utf-8')
     else:
-        return 'Unsupported file type for File 1'
+        flash('Unsupported file type for File 1')
+        return redirect(url_for('index'))
 
     # Convert file2 to text
     if ext2 == '.docx':
+        if file2_mime != 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+            flash('File 2 is not a valid DOCX file!')
+            return redirect(url_for('index'))
         text2 = docx_to_text(file2)
     elif ext2 == '.pdf':
+        if file2_mime != 'application/pdf':
+            flash('File 2 is not a valid PDF file!')
+            return redirect(url_for('index'))
         text2 = pdf_to_text(file2)
     elif ext2 == '.txt':
+        if not file2_mime.startswith('text/'):
+            flash('File 2 is not a valid text file!')
+            return redirect(url_for('index'))
         text2 = file2.read().decode('utf-8')
     else:
-        return 'Unsupported file type for File 2'
+        flash('Unsupported file type for File 2')
+        return redirect(url_for('index'))
 
     # Diff Comparison
     differ = difflib.HtmlDiff(wrapcolumn=80)
